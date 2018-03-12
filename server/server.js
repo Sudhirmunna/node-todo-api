@@ -1,27 +1,28 @@
+const express = require('express');
+const bodyParser = require('body-parser');
 const {mongoose} = require('./db/mongoose')
 const {Todo} = require('./models/todos');
 const {User} = require('./models/users');
 
-// const newTodo = new Todo({
-//     text: 'Cook Dinner',
-//     completed: false,
-//     completedAt: 123
-// });
+const app = express();
 
-// newTodo.save().then((doc) => {
-//     console.log('Saved todo :', doc)
-// },
-// (e) => {
-//     console.log('Unable to save todo', e);
-// });
+app.use(bodyParser.json());
 
-const newUser = new User({
-    email: 'panda@test.com'
+app.post('/todos', (req, res) => {
+    let todo = new Todo({
+        text: req.body.text,
+        completed: req.body.completed,
+        completedAt: req.body.completedAt
+    });
+
+    todo.save().then((doc) => {
+        res.send(doc);
+    }, 
+    (e) => {
+        res.send(400).send(e);
+    })
 });
 
-newUser.save().then( (doc) => {
-    console.log('Saved user :', doc);
-},
-(e) => {
-    console.log('Unable to save todo', e);
-})
+app.listen(3000, () =>{
+    console.log('Connected to server on port 3000');
+});
