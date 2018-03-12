@@ -10,11 +10,11 @@ MongoClient.connect(url, function (err, client) {
     console.log('Connected to mongodb server!!');
     const db = client.db('TodoApp');
     db.collection('Users').findOneAndUpdate({
-        name: 'Sridhar'
+        name: 'Sudhir'
     },
         {
             $set: {
-                name: 'Sridhar Chipuri'
+                name: 'Sudhir Kumar'
             }
         },
         {
