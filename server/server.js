@@ -98,6 +98,17 @@ app.patch('/todos/:id', (req, res) => {
     }).catch((e) => {
       res.status(400).send();
     })
+})
+
+app.post('/users', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body);
+
+    user.save().then(() => {
+        return user.generateAuthTokens();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => res.status(400).send('unable to post todo'));
 });
   
 app.listen(port, () =>{
