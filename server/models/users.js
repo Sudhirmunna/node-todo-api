@@ -46,6 +46,17 @@ const userSchema = new mongoose.Schema({
     user.tokens = user.tokens.concat([{access, token}]);
     return user.save().then(() => token);
   };
+  userSchema.methods.removeToken = function (token) {
+    let user = this;
+
+    return user.update({
+      $pull: {
+        tokens: {
+          token: token
+        }
+      }
+    });
+  };
   // Model methods
   userSchema.statics.findByToken = function(token) {
     let User = this;
